@@ -74,7 +74,7 @@ void hienThiList (Node* head){
 int main (){
     Node* head = nullptr;
 
-    // List: 8 9 10
+    // List: 5 6 7 8 9 10
     themVaoDau(&head, 10);
     themVaoDau(&head, 9);
     themVaoDau(&head, 8);
