@@ -6,7 +6,7 @@ Cài đặt danh sách loại gỗ trong kho kiểu stack
 #include <iostream>
 #include <string>
 using namespace std;
-#define MAX 5
+#define MAX 10
 
 struct CayGo { // Các thông tin của một cây gỗ
     string loaiGo;
@@ -39,6 +39,18 @@ void push(khoGo* kho, CayGo cay) { // Xếp 1 cây gỗ mới lên trên
     }
 }
 
+void pushVaoDay(khoGo* kho, CayGo cay) { // Xếp cây gỗ mới vào đáy
+    if (isFull(kho)) {
+        cout << "Kho go da day!" << endl;
+    } else {
+        for (int i = kho->top; i > 0; i--) { // Dịch các phần tử lên trên
+            kho->cayGo[i] = kho->cayGo[i - 1];
+        }
+        kho->cayGo[0] = cay;
+        kho->top++; 
+    }
+}
+
 CayGo pop(khoGo* kho) { // Lấy ra cây ở trên cùng của khoGo
     if (isEmpty(kho)) {
         cout << "Kho go trong" << endl;
@@ -64,16 +76,46 @@ void nhapGo(khoGo* kho) {
     push(kho, cay_push);
 }
 
+void nhapGoVaoDay(khoGo* kho) {
+    if (isFull(kho)) {
+        cout << "Kho go da day, khong the nhap them" << endl;
+    } else {
+        CayGo cay_push;
+        cout << "Nhap thong tin cay go" << endl;
+        cout << "Loai go ";
+        cin.ignore();
+        getline(cin, cay_push.loaiGo);
+        cout << "Chu vi cay go cm ";
+        cin >> cay_push.chuVi;
+        cout << "Tuoi cua cay go ";
+        cin >> cay_push.tuoiGo;
+        pushVaoDay(kho, cay_push);
+    }
+}
+
 void hienThiKho(khoGo* kho) {
     if (isEmpty(kho)) {
-        cout << "Kho go trong" << endl;
+        cout << "Kho go trong!" << endl;
         return;
     }
     cout << "Cac cay go trong kho" << endl;
     for (int i = 0; i < kho->top; i++) {
         cout << "Go " << kho->cayGo[i].loaiGo
-             << " Chu vi " << kho->cayGo[i].chuVi << " cm"
-             << " " << kho->cayGo[i].tuoiGo << " tuoi" << endl;
+             << ", Chu vi " << kho->cayGo[i].chuVi << " cm"
+             << ", " << kho->cayGo[i].tuoiGo << " tuoi" << endl;
+    }
+}
+
+void hienThiKhoTuTop (khoGo* kho){
+    if (isEmpty (kho)){
+        cout << "Kho go trong!" << endl;
+        return;
+    }
+    cout << "Cac cay go theo thu tu tu tren xuong" << endl;
+    for (int i=kho->top-1; i>=0; i--){
+        cout << "Go " << kho->cayGo[i].loaiGo
+             << ", Chu vi " << kho->cayGo[i].chuVi << " cm"
+             << ", " << kho->cayGo[i].tuoiGo << " tuoi" << endl;
     }
 }
 
@@ -90,20 +132,24 @@ int demGoCungTuoi(khoGo* kho, short tuoi) {
 int main() {
     khoGo* Kho = new khoGo;
     khoiTao(Kho);
-    CayGo cay1 = {"Sua do", 50, 100};
-    CayGo cay2 = {"Mun", 68, 86};
-    CayGo cay3 = {"Dan huong", 48, 66};
+    CayGo cay1 = {"Gu", 50, 10};
+    CayGo cay2 = {"Lim", 70, 20};
+    CayGo cay3 = {"Soi", 100, 10};
+    CayGo cay4 = {"Soi", 45, 35};
     push(Kho, cay1);
     push(Kho, cay2);
     push(Kho, cay3);
+    push(Kho, cay4);
 
     int luaChon;
     do {
-        cout << "Quan ly kho go" << endl;
+        cout << "\nQuan ly kho go" << endl;
         cout << "1. Nhap go vao kho" << endl;
-        cout << "2. Hien thi go trong kho" << endl;
-        cout << "3. Dem so luong go cung tuoi" << endl;
-        cout << "4. Thoat" << endl;
+        cout << "2. Hien thi go trong kho (nhap truoc hien thi truoc)" << endl;
+        cout << "3. Hien thi go trong kho (theo thu tu tu tren xuong)" << endl;
+        cout << "4. Dem so luong go cung tuoi" << endl;
+        cout << "5. Nhap go vao day kho go" << endl;
+        cout << "6. Thoat" << endl;
         cout << "Nhap lua chon ";
         cin >> luaChon;
 
@@ -117,6 +163,10 @@ int main() {
                 break;
             }
             case 3: {
+                hienThiKhoTuTop(Kho);
+                break;
+            }
+            case 4: {
                 if (isEmpty(Kho)) {
                     cout << "Kho go trong!" << endl;
                 } else {
@@ -128,7 +178,12 @@ int main() {
                 }
                 break;
             }
-            case 4: {
+            case 5: {
+                cout << "Nhap go vao day kho" << endl;
+                nhapGoVaoDay (Kho);
+                break;
+            }
+            case 6: {
                 cout << "Thoat chuong trinh" << endl;
                 break;
             }
@@ -137,7 +192,7 @@ int main() {
                 break;
             }
         }
-    } while (luaChon != 4);
+    } while (luaChon != 6);
 
     delete Kho;
 
