@@ -10,23 +10,22 @@ Sử dụng mảng cho trên lớp (240 73 101 21 13 25 11 37 89 30 15 51)
 #include <iostream>
 using namespace std;
 
-struct AvlNode{
+struct AvlNode {
     int elem;
     AvlNode* left;
     AvlNode* right;
     int height;
 
-    AvlNode(int e, AvlNode* l = nullptr, AvlNode* r = nullptr, int h = 0):
-        elem(e), left(l), right(r), height(h) {}
+    AvlNode(int e, AvlNode* l = nullptr, AvlNode* r = nullptr, int h = 0)
+        : elem(e), left(l), right(r), height(h) {}
 };
 
-//chieu cao cua nut
-int height(AvlNode* t) {
+int height(AvlNode* t){
     return t == nullptr ? -1 : t->height;
 }
 
-// Ham xoay don trai-trai
-void rotateWithLeftChild(AvlNode*& k2) {
+// xoay don trai trai
+void rotateWithLeftChild(AvlNode*& k2){
     AvlNode* k1 = k2->left;
     k2->left = k1->right;
     k1->right = k2;
@@ -35,8 +34,8 @@ void rotateWithLeftChild(AvlNode*& k2) {
     k2 = k1;
 }
 
-// Ham xoay don phai-phai
-void rotateWithRightChild(AvlNode*& k2) {
+// xoay don phai phai
+void rotateWithRightChild(AvlNode*& k2){
     AvlNode* k1 = k2->right;
     k2->right = k1->left;
     k1->left = k2;
@@ -45,19 +44,19 @@ void rotateWithRightChild(AvlNode*& k2) {
     k2 = k1;
 }
 
-// Ham xoay kep trai-phai
-void doubleWithLeftChild(AvlNode*& k3) {
+// xoay kep trai phai
+void doubleWithLeftChild(AvlNode*& k3){
     rotateWithRightChild(k3->left);
     rotateWithLeftChild(k3);
 }
 
-// Ham xoay kep phai-trai
-void doubleWithRightChild(AvlNode*& k3) {
+// xoay kep phai trai
+void doubleWithRightChild(AvlNode*& k3){
     rotateWithLeftChild(k3->right);
     rotateWithRightChild(k3);
 }
 
-//can bang cay
+// can bang
 void balance(AvlNode*& t){
     if (t == nullptr) return;
 
@@ -78,46 +77,34 @@ void balance(AvlNode*& t){
     t->height = max(height(t->left), height(t->right)) + 1;
 }
 
-//chen mot phan tu vao cay
-void insert(int x, AvlNode*& t) {
+// chen 1 phan tu
+void insert(int x, AvlNode*& t){
     if (t == nullptr) {
         t = new AvlNode(x);
-    }
-    else if (x < t->elem) {
+    } else if (x < t->elem) {
         insert(x, t->left);
-    }
-    else if (x > t->elem) {
+    } else if (x > t->elem) {
         insert(x, t->right);
     }
 
     balance(t);
 }
 
-// duyet LNR
-void inOrder(AvlNode* t){
+// in cay AVL (goc tu ben trai, cac node con ben phai)
+void printTree(AvlNode* t, int space = 0, int indent = 4) {
     if (t == nullptr) return;
-    inOrder(t->left);
-    cout << t->elem << " ";
-    inOrder(t->right);
+
+    space += indent;
+    printTree(t->right, space);
+
+    cout << endl;
+    for (int i = indent; i < space; ++i) cout << " ";
+    cout << t->elem << "\n";
+
+    printTree(t->left, space);
 }
 
-// duyet NLR
-void preOrder(AvlNode* t){
-    if (t == nullptr) return;
-    cout << t->elem << " ";
-    preOrder(t->left);
-    preOrder(t->right);
-}
-
-// duyet LRN
-void postOrder(AvlNode* t){
-    if (t == nullptr) return;
-    postOrder(t->left);
-    postOrder(t->right);
-    cout << t->elem << " ";
-}
-
-int main(){
+int main() {
     AvlNode* root = nullptr;
 
     int arr[] = {240, 73, 101, 21, 13, 25, 11, 37, 89, 30, 15, 51};
@@ -126,13 +113,8 @@ int main(){
     for (int i = 0; i < n; ++i){
         insert(arr[i], root);
         cout << "Sau khi chen " << arr[i] << ":\n";
-        cout << "Duyet theo thu tu LNR: ";
-        inOrder(root);
-        cout << "\nDuyet theo thu tu NLR: ";
-        preOrder(root);
-        cout << "\nDuyet theo thu tu LRN: ";
-        postOrder(root);
-        cout << "\n\n";
+        printTree(root);
+        cout << "\n";
     }
 
     return 0;
