@@ -37,8 +37,8 @@ int findLargestSquare(int** mat, int M, int N)
                 lookup[i][j] = mat[i][j];
             }
             // Nếu phần tử hiện tại là 1
-            else if (mat[i][j] == 1) {
-                lookup[i][j] = min(lookup[i][j - 1], lookup[i - 1][j], lookup[i - 1][j - 1]) + 1;
+            else if (mat[i][j] == 1) {                                                                  
+                lookup[i][j] = min(lookup[i][j - 1], lookup[i - 1][j], lookup[i - 1][j - 1]) + 1;       //size[i][j] = min(size[i-1][j], size[i][j-1], size[i-1][j-1]) + 1 bởi vì để tạo được hình vuông kích thước k+1, cần có 3 hình vuông kích thước k ở trên, trái và chéo trên 
             }
             else {
                 lookup[i][j] = 0;
