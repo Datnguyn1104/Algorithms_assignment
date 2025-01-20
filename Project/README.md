@@ -7,17 +7,17 @@
 Input: Ma trận nhị phân mat kích thước M x N
 Output: maxSize - kích thước lớn nhất của ma trận vuông con toàn số 1
 
-#### Nếu M = 0 hoặc N = 0: Trả về 0
-#### Tạo mảng lookup kích thước M x N
-#### maxSize = 0
-#### Duyệt qua từng phần tử mat[i][j] với i từ 0 đến M-1, j từ 0 đến N-1:
-   ##### Nếu i = 0 hoặc j = 0:
+#### 1. Nếu M = 0 hoặc N = 0: Trả về 0
+#### 2. Tạo mảng lookup kích thước M x N
+Khởi tạo maxSize = 0 để lưu kích thước của ma trận vuông con cần tìm
+#### 3. Duyệt qua từng phần tử mat[i][j] với i từ 0 đến M-1, j từ 0 đến N-1:
+   ##### - Nếu i = 0 hoặc j = 0:
        lookup[i][j] = mat[i][j]
-   ##### Ngược lại, nếu mat[i][j] = 1:
+   ##### - Ngược lại, nếu mat[i][j] = 1:
        lookup[i][j] = min(lookup[i][j-1], lookup[i-1][j], lookup[i-1][j-1]) + 1
-   ##### Ngược lại:
+   ##### - Ngược lại:
        lookup[i][j] = 0
-   ##### Cập nhật maxSize = max(maxSize, lookup[i][j])
-#### Trả về maxSize
+   ##### - Cập nhật maxSize = max(maxSize, lookup[i][j])
+#### 4. Trả về maxSize
 
-###Ứng dụng: Xử lý hình ảnh và thị giác máy tính, phát hiện các vùng có chung đặc điểm, phân loại vùng ảnh...
+### Ứng dụng: Xử lý hình ảnh và thị giác máy tính, phát hiện các vùng có chung đặc điểm, phân loại vùng ảnh...
